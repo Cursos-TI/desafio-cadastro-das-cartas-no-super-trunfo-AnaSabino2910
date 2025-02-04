@@ -26,26 +26,20 @@ void cadastrarcarta(Carta cartas[], int *totalCartas) {
     printf("\n--- Cadastro de Cartas ---\n");
 
 //ESTADO
-    printf(" Informe a letra do estado (A - H): ");
-    scanf("%c", &novaCarta.estado);
-    if (novaCarta.estado < 'A' || novaCarta.estado > 'H') {
-        printf("Estado invalido! Deve estar entre A e H.\n");
-        return;
-    }
-    
+    printf("Informe a letra do estado (A - H): ");
+    scanf(" %c", &novaCarta.estado);
+    getchar(); //para limpar o 'n' do buffer
 
-// CÓD DA CARTA
-    printf("Informe o código da carta (EX: A01, H04): ");
-    scanf("%3s", novaCarta.codigo);
-    if (novaCarta.codigo[0] != novaCarta.estado || novaCarta.codigo[1] < '0' || novaCarta.codigo[1] > '9' || novaCarta.codigo[2] < '1' || novaCarta.codigo[2] > '4'){
-        printf("Código invalido! Deve ser no formato correto (Ex: A01, H04).\n");
-        return;
-    }
     
+//CÓD DA CARTA
+    printf("Informe o código da carta (EX: A01, H04): ");
+    scanf("%s", novaCarta.codigo);
+    getchar(); //para limpar o 'n' do buffer
 
 //NOME DA CIDADE
     printf("Informe o nome da cidade: ");
-    scanf("%[^\n]", novaCarta.cidade);
+    fgets(novaCarta.cidade, sizeof(novaCarta.cidade), stdin);
+    novaCarta.cidade[strcspn(novaCarta.cidade, "\n")] = 0; //remove o\n do final1
 
 //POPULAÇÃO
     printf("Informe a População: ");
@@ -63,7 +57,11 @@ void cadastrarcarta(Carta cartas[], int *totalCartas) {
     printf("Informe o número de pontos turisticos: ");
     scanf("%d", &novaCarta.pontosturisticos);
 
-    printf("\n Carta cadastrada com sucesso! \n");
+//ARMAZENA A CARTA NO ARRAY
+cartas[*totalCartas] = novaCarta;
+(*totalCartas)++;
+
+printf("\n Carta cadastrada com sucesso! \n");
 }
 
 //FUNÇÃO PARA EXIBIR TODAS AS CARTA CADASTRADA
@@ -73,8 +71,8 @@ void listarCartas(Carta cartas[], int totalCartas) {
         return;
     }
     
-   printf("\n--- CARTA CADASTRADA ---\n");
-   for (int i = 0; i < totalCartas; i++){
+   printf("\n--- CARTAS CADASTRADAS ---\n");
+   for (int i = 0; i < totalCartas; i++) {
     printf("\nCarta %d\n", i + 1);
     printf("Código: %s\n", cartas[i].codigo);
     printf("Estado: %c\n", cartas[i].estado);
@@ -84,7 +82,27 @@ void listarCartas(Carta cartas[], int totalCartas) {
     printf("PIB: %.2F\n", cartas[i].pib);
     printf("Pontos Turisticos: %d\n", cartas[i].pontosturisticos);
    }
-   
+}
+//FUNÇÃO PRINCIPAL
+int main() {
+    Carta cartas[MAX_CARTAS];
+    int totalCartas = 0;
+    int numCartas;
+// PERGUNTAS QUANTAS CARTAS DESEJA CADASTRAR
+    printf("Quantas cartas deseja cadastrar? ");
+    scanf("%d",&numCartas);
+    if (numCartas > MAX_CARTAS) {
+        printf("Número excede o limite permitido (%d cartas).\n", MAX_CARTAS);
+        return 1;
+    }
+//CADASTRO DAS CARTAS
+    for (int i = 0; i < numCartas; i++) {
+        cadastrarcarta(cartas, &totalCartas);
+    }
+//EXIBE AS CARTAS CADASTRADAS
+    listarCartas(cartas, totalCartas);
+    return 0;
+
 }
 
    

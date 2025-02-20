@@ -59,8 +59,6 @@ int main() {
         // Calcula PIB per capita
         pibPerCapita[i] = (populacoes[i] > 0) ? (pibs[i] / populacoes[i]) : 0;
 
-        // Calcula o super poder (densidade é invertida para favorecer valores menores)
-        superPoder[i] = populacoes[i] + areas[i] + pibs[i] + pibPerCapita[i] + pontosTuristicos[i] + (1 / (densidade[i] + 1));
     }
 
     // Exibe todas as cartas cadastradas
@@ -77,24 +75,23 @@ int main() {
     carta1--; // Ajusta para índice do array
     carta2--;
 
-    // Exibe as cartas escolhidas
-    printf("\n--- Comparação das Cartas ---\n");
-    printf("\nCarta 1 - %s (%s)\n", nomes[carta1], codigos[carta1]);
-    printf("Carta 2 - %s (%s)\n", nomes[carta2], codigos[carta2]);
+    //ESCOLHA DO ATRIBUTOA SER COMPARADO
+    unsigned long int atributo1 = populacoes[carta1];
+    unsigned long int atributo2 = populacoes[carta2];
+    char atributoNome[] = "Populações";
 
-    printf("\nResultados das Comparações:\n");
-    printf("População: %s\n", (populacoes[carta1] > populacoes[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
-    printf("Área: %s\n", (areas[carta1] > areas[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
-    printf("PIB: %s\n", (pibs[carta1] > pibs[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
-    printf("Pontos turísticos: %s\n", (pontosTuristicos[carta1] > pontosTuristicos[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
-    printf("Densidade populacional: %s\n", (densidade[carta1] < densidade[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
-    printf("PIB per Capita: %s\n", (pibPerCapita[carta1] > pibPerCapita[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
-    printf("Super Poder: %s\n", (superPoder[carta1] > superPoder[carta2]) ? "Carta 1 vence" : "Carta 2 vence");
+    //EXIBE AS CARTAS ESCOLHIDAS
+    printf("\n--- COMPARAÇÃO DAS CARTAS ---\n");
+    printf("Carta 1 - %s (%s) | %s: %lu\n", nomes[carta1], codigos[carta1], atributoNome, atributo1);
+    printf("Carta 2 - %s (%s) | %s: %lu\n", nomes[carta2], codigos[carta2], atributoNome, atributo2);
 
+    //DETERMINA A VENCEDORA
+    if (atributo1 > atributo2) {
+        printf("\nA Carta 1 venceu na comparação por %s !\n", atributoNome);    
+    } else if (atributo2 > atributo1) {
+        printf("\nA Carta 2 venceu na comparação por %s !\n", atributoNome);
+    } else{
+        printf("\nEmpate! Ambas as cartas temo mesmo valor de %s.\n", atributoNome);
+    }
     return 0;
 }
-
-
-
-
-   
